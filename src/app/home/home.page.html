@@ -1,0 +1,122 @@
+<!-- home.page.html -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Calculator
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <!-- Calculator Display -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-input [(ngModel)]="display" class="calculator-display" disabled></ion-input>
+      </ion-col>
+    </ion-row>
+
+    <!-- Calculator Buttons -->
+    <ion-row>
+      <ion-col size="3" *ngFor="let button of buttons">
+        <ion-button (click)="onButtonClick(button)" expand="full" class="calculator-button">
+          {{ button }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- Additional Calculator Buttons -->
+    <ion-row>
+      <ion-col size="3">
+        <ion-button (click)="calculate()" expand="full" class="calculator-button">
+          =
+        </ion-button>
+      </ion-col>
+      <ion-col size="3">
+        <ion-button (click)="viewHistory()" expand="full" class="calculator-button">
+          View History
+        </ion-button>
+      </ion-col>
+      <ion-col size="3">
+        <ion-button (click)="clearHistory()" expand="full" class="calculator-button">
+          Clear History
+        </ion-button>
+      </ion-col>
+      <ion-col size="3">
+        <ion-button (click)="clearInput()" expand="full" class="calculator-button">
+          Clear Input
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- History -->
+    <ion-row *ngIf="showHistory">
+      <ion-col size="12">
+        <ion-list>
+          <ion-item-sliding *ngFor="let item of history; let i = index">
+            <ion-item>
+              <ion-label>
+                <h2>{{ item.expression }}</h2>
+                <p>Result: {{ item.result }}</p>
+                <p>Timestamp: {{ item.timestamp }}</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item-options side="end">
+              <ion-item-option (click)="removeItem(i)">
+                Remove
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <!-- SQLite Todo List -->
+    <ion-row *ngIf="showSQLiteHistory">
+      <ion-col size="12">
+        <ion-list>
+          <ion-item-sliding *ngFor="let item of sqliteHistory; let i = index">
+            <ion-item>
+              <ion-label>
+                <h2>{{ item.expression }}</h2>
+                <p>Result: {{ item.result }}</p>
+                <p>Timestamp: {{ item.timestamp }}</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item-options side="end">
+              <ion-item-option (click)="removeSQLiteItem(i)">
+                Remove
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-modal [showBackdrop]="true" [keyboardClose]="true" *ngIf="showHistoryModal || showSQLiteHistory">      <ion-content>
+        <ion-list *ngIf="showHistoryModal">
+          <ion-item *ngFor="let item of history">
+            <ion-label>
+              <h2>{{ item.expression }}</h2>
+              <p>Result: {{ item.result }}</p>
+              <p>Timestamp: {{ item.timestamp }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-list *ngIf="showSQLiteHistory">
+          <ion-item *ngFor="let item of sqliteHistory">
+            <ion-label>
+              <h2>{{ item.expression }}</h2>
+              <p>Result: {{ item.result }}</p>
+              <p>Timestamp: {{ item.timestamp }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-modal>
+  </ion-grid>
+</ion-content>
